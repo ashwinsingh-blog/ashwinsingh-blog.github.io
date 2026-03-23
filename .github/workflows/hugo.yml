@@ -6,23 +6,25 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true   # IMPORTANT for theme
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: 'latest'
+          hugo-version: '0.158.0'
           extended: true
 
-      - name: Build site
-        run: hugo --minify
+      - name: Build
+        run: hugo --minify --baseURL "https://ashwinsingh-blog.github.io/"
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
